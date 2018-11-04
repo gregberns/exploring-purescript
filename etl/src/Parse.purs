@@ -54,55 +54,14 @@ getTblRow i tbl = index tbl i
 --colMap = [Tuple 0 1, Tuple 1 2, Tuple 2 0]
 colMap = (Tuple 0 1 : Tuple 1 2: Tuple 2 0 : Nil)
 
--- > remap colMap table
--- [(Tuple 1 (Just [2,5,8])),(Tuple 2 (Just [3,6,9])),(Tuple 0 (Just [1,4,7]))]
--- remap :: List (Tuple Int Int) -> List (List Int) -> List (Tuple Int (Maybe (List Int)))  -- -> List (List Int)
--- remap colmap tbl =
---   let 
---     --f (Tuple a b) = Tuple (snd t) (getTblCol (snd t) tbl)
---     rem t (Tuple a b) = Tuple a (getTblCol b t)
---     -- order t = undefined
---   in
---      (map (rem tbl) colmap)
-
-
--- sortOrder :: List (Tuple Int (Maybe (List Int))) -> List (List Int)
--- sortOrder tbl =
---   let 
-    
---     compareTuple (Tuple a b) (Tuple a' b') = compare a a'    
-    
---     -- insertBy :: forall a. (a -> a -> Ordering) -> a -> List a -> List a
---     -- ord :: Tuple Int
---     ord :: forall i l. List (Tuple i l) -> (Tuple i l) -> List (Tuple i l)
---     ord acc t = insertBy compareTuple t acc
---   in
-    
---     foldl ord Nil tbl
-
--- reorder :: List (Tuple Int Int) -> List (List Int) -> List (List Int)
--- reorder mapping table =
---   --maybe sort for security
-  
---   let
---     --insertAt :: forall a. Int -> a -> Array a -> Maybe (Array a)
---     reorderRow row = insertAt j i
---   in
---     mapMaybe reorderRow table
-
-
-
-foreign import addString :: Array (Tuple String String) -> String -> Array String
-addS a b = addString a b
-
 
 foreign import remapIndexes :: forall a b c. Array (Tuple a b) -> Array c -> Array c
 
---rem = remapIndexes [Tuple 0 1, Tuple 1 2, Tuple 2 0] [4,5,6]
-
---rem = remapIndexes ( Tuple 0 1 : Tuple 1 2 : Tuple 2 0 : Nil) (4:5:6:Nil)
-
-reorderCols :: List (Tuple Int Int) -> List (List Int) -> List (List Int)
+-- usage :
+-- reorderCols (Tuple 0 1 : Tuple 1 2: Tuple 2 0 : Nil) ((1 : 2 : 3 : Nil) : (4 : 5 : 6 : Nil) : (7 : 8 : 9 : Nil) : Nil)
+-- output: 
+-- ((3 : 1 : 2 : Nil) : (6 : 4 : 5 : Nil) : (9 : 7 : 8 : Nil) : Nil)
+reorderCols :: forall a. List (Tuple Int Int) -> List (List a) -> List (List a)
 reorderCols cols tbl = 
   let 
     --f :: 
@@ -110,7 +69,13 @@ reorderCols cols tbl =
   in
     map f tbl
 
-rem = reorderCols colMap table
+--rem = reorderCols colMap table
+rem = reorderCols (Tuple 0 1 : Tuple 1 2: Tuple 2 0 : Nil) ((1 : 2 : 3 : Nil) : (4 : 5 : 6 : Nil) : (7 : 8 : 9 : Nil) : Nil)
+
+
+
+
+
 
 -- Read first line and get column names
 -- Column names are now 
